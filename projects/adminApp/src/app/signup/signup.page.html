@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item class="vertical-space">
+      <h1 class="center">ToDo App</h1>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input type="email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-button
+    class="ion-padding"
+    expand="block"
+    color="secondary"
+    shape="round"
+    (click)="register()"
+    >Register</ion-button
+  >
+  <ion-button
+    class="ion-padding"
+    expand="block"
+    fill="clear"
+    color="primary"
+    (click)="gotoLogin()"
+  >
+    Already have an account? Login here
+  </ion-button>
+</ion-content>

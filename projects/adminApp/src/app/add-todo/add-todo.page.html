@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Add a new ToDo</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Title</ion-label>
+      <ion-input type="text" [(ngModel)]="title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-input type="text" [(ngModel)]="description"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Due Date</ion-label>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    </ion-item>
+  </ion-list>
+  <ion-button
+    class="ion-padding"
+    expand="block"
+    shape="round"
+    color="secondary"
+    (click)="addTask()"
+  >
+    Add ToDo
+  </ion-button>
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime
+        [showDefaultButtons]="true"
+        min="2024"
+        presentation="date"
+        id="datetime"
+        [(ngModel)]="dueDate"
+      ></ion-datetime>
+    </ng-template>
+  </ion-modal>
+</ion-content>

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "adminApp": {
+      "name": "adminApp",
+      "type": "angular",
+      "root": "projects\\adminApp"
+    },
+    "userApp": {
+      "name": "userApp",
+      "type": "angular",
+      "root": "projects\\userApp"
+    }
+  }
+}
