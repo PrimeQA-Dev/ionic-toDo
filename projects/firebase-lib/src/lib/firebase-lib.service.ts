@@ -9,9 +9,12 @@ import {
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   getFirestore,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore';
 
 @Injectable({
@@ -64,6 +67,17 @@ export class FirebaseLibService implements OnInit {
 
   async getToDos() {
     return getDocs(collection(this.firestore, 'toDos'));
+  }
+
+  async deleteTodo(id: string) {
+    deleteDoc(doc(this.firestore, 'toDos', id));
+  }
+
+  async updateTodo(id: string, data: any) {
+    return updateDoc(doc(this.firestore, 'toDos', id), {
+      ...data,
+      created: serverTimestamp(),
+    });
   }
 
   async logout() {

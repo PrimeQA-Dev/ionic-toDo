@@ -9,7 +9,7 @@ import { FirebaseLibService } from 'firebase-lib';
 })
 export class ToDosPage {
   constructor(
-    private router: NavController,
+    private navCtrl: NavController,
     private firebaseService: FirebaseLibService,
     private toastController: ToastController
   ) {}
@@ -35,7 +35,7 @@ export class ToDosPage {
     return this.toDos;
   }
   gotoAddTodo() {
-    this.router.navigateForward(['/add-todo']);
+    this.navCtrl.navigateForward(['/add-todo']);
   }
 
   async logout() {
@@ -46,7 +46,7 @@ export class ToDosPage {
         duration: 2000,
       });
       toast.present();
-      this.router.navigateBack(['/login']);
+      this.navCtrl.navigateBack(['/login']);
     } catch (e) {
       console.error('Error logging out: ', e);
       const toast = await this.toastController.create({

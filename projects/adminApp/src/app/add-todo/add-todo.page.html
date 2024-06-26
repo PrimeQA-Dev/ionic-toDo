@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="secondary">
-    <ion-title>Add a new ToDo</ion-title>
+    <ion-title *ngIf="!todo;else updateTodoTitle">Add a new ToDo</ion-title>
+    <ng-template #updateTodoTitle>
+      <ion-title>Edit ToDo</ion-title>
+    </ng-template>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -23,14 +26,26 @@
     </ion-item>
   </ion-list>
   <ion-button
+    *ngIf="!todo; else updateTodoButton"
     class="ion-padding"
     expand="block"
     shape="round"
     color="secondary"
-    (click)="addTask()"
+    (click)="createTodo()"
   >
     Add ToDo
   </ion-button>
+  <ng-template #updateTodoButton>
+    <ion-button
+      class="ion-padding"
+      expand="block"
+      shape="round"
+      color="secondary"
+      (click)="updateTodo()"
+    >
+      Update ToDo
+    </ion-button>
+  </ng-template>
   <ion-modal [keepContentsMounted]="true">
     <ng-template>
       <ion-datetime

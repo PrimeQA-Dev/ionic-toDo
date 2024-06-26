@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { FirebaseLibService } from 'firebase-lib';
@@ -9,13 +10,20 @@ import { FirebaseLibService } from 'firebase-lib';
 })
 export class TodosPage {
   constructor(
-    private router: NavController,
+    private navCtrl: NavController,
     private firebaseService: FirebaseLibService,
     private toastController: ToastController
-  ) {}
+  ) {
+    this.filter = () => true;
+  }
   toDos: any[] = [];
+  filter: any;
 
   async ionViewWillEnter() {
+    this.fetchToDos();
+  }
+
+  async fetchToDos() {
     try {
       this.toDos = [];
       const querySnapshot = await this.firebaseService.getToDos();
@@ -32,10 +40,44 @@ export class TodosPage {
   }
 
   get visibleToDos() {
-    return this.toDos;
+    return this.toDos.filter(this.filter);
   }
+
   gotoAddTodo() {
-    this.router.navigateForward(['/add-todo']);
+    this.navCtrl.navigateForward(['/add-todo']);
+  }
+
+  handleInput(event: any) {
+    const query = event.target.value.toLowerCase();
+    this.filter = (toDo: any) => {
+      return (
+        toDo.title.toLowerCase().includes(query) ||
+        toDo.description.toLowerCase().includes(query)
+      );
+    };
+  }
+
+  async delete(todo: any) {
+    try {
+      this.firebaseService.deleteTodo(todo.id);
+      const toast = await this.toastController.create({
+        message: 'Todo deleted successfully',
+        duration: 2000,
+      });
+      toast.present();
+      this.fetchToDos();
+    } catch (e) {
+      console.error('Error deleting todo: ', e);
+      const toast = await this.toastController.create({
+        message: 'Error deleting todo',
+        duration: 2000,
+      });
+      toast.present();
+    }
+  }
+
+  async update(todo: any) {
+    this.navCtrl.navigateForward(['/add-todo'], { state: todo });
   }
 
   async logout() {
@@ -46,7 +88,7 @@ export class TodosPage {
         duration: 2000,
       });
       toast.present();
-      this.router.navigateBack(['/login']);
+      this.navCtrl.navigateBack(['/login']);
     } catch (e) {
       console.error('Error logging out: ', e);
       const toast = await this.toastController.create({

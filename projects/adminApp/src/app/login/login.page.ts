@@ -12,12 +12,12 @@ export class LoginPage {
   password: string = '';
   constructor(
     private firebaseService: FirebaseLibService,
-    private router: NavController,
+    private navCtrl: NavController,
     private toastController: ToastController
   ) {
     this.firebaseService.isUserLoggedIn().then((isLoggedIn) => {
       if (isLoggedIn) {
-        this.router.navigateForward(['/todos']);
+        this.navCtrl.navigateForward(['/todos']);
       }
     });
   }
@@ -34,7 +34,7 @@ export class LoginPage {
           duration: 3000,
         });
         toast.present();
-        this.router.navigateForward(['/todos']);
+        this.navCtrl.navigateForward(['/todos']);
       }
     } catch (e: any) {
       console.error('Error logging in user: ', e);

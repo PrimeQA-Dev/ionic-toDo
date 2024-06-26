@@ -12,12 +12,12 @@ export class SignupPage {
   password: string = '';
   constructor(
     private firebaseService: FirebaseLibService,
-    private router: NavController,
+    private navCtrl: NavController,
     private toastController: ToastController
   ) {
     this.firebaseService.isUserLoggedIn().then((isLoggedIn) => {
       if (isLoggedIn) {
-        this.router.navigateForward(['/to-dos']);
+        this.navCtrl.navigateForward(['/to-dos']);
       }
     });
   }
@@ -34,7 +34,7 @@ export class SignupPage {
           duration: 3000,
         });
         toast.present();
-        this.router.navigateForward(['/to-dos']);
+        this.navCtrl.navigateForward(['/to-dos']);
       }
     } catch (e: any) {
       console.error('Error registering user: ', e);
@@ -47,6 +47,6 @@ export class SignupPage {
   }
 
   gotoLogin() {
-    this.router.back();
+    this.navCtrl.back();
   }
 }

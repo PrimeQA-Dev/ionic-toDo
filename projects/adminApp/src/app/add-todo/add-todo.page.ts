@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { FirebaseLibService } from 'firebase-lib';
 
@@ -11,16 +12,25 @@ export class AddTodoPage {
   title: string = '';
   description: string = '';
   dueDate: string;
+  todo: any;
 
   constructor(
     private firebaseService: FirebaseLibService,
     private toastController: ToastController,
-    private router: NavController
+    private navCtrl: NavController,
+    private router: Router
   ) {
-    this.dueDate = new Date().toISOString();
+    if (router.getCurrentNavigation()?.extras.state) {
+      this.todo = this.router.getCurrentNavigation()?.extras.state;
+      this.title = this.todo.title;
+      this.description = this.todo.description;
+      this.dueDate = this.todo.dueDate;
+    } else {
+      this.dueDate = new Date().toISOString();
+    }
   }
 
-  async addTask() {
+  async createTodo() {
     try {
       const data = await this.firebaseService.addTodo(
         this.title,
@@ -34,10 +44,34 @@ export class AddTodoPage {
           duration: 2000,
         });
         toast.present();
-        this.router.back();
+        this.navCtrl.back();
       }
     } catch (e: any) {
       console.error('Error adding new todo: ', e);
+      const toast = await this.toastController.create({
+        message: e.message,
+        duration: 3000,
+      });
+      toast.present();
+    }
+  }
+
+  async updateTodo() {
+    try {
+      const data = await this.firebaseService.updateTodo(this.todo.id, {
+        title: this.title,
+        description: this.description,
+        dueDate: this.dueDate,
+      });
+
+      const toast = await this.toastController.create({
+        message: 'ToDo updated successfully!',
+        duration: 2000,
+      });
+      toast.present();
+      this.navCtrl.back();
+    } catch (e: any) {
+      console.error('Error updating todo: ', e);
       const toast = await this.toastController.create({
         message: e.message,
         duration: 3000,
